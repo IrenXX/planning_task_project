@@ -1,0 +1,14 @@
+app:
+  public-host: ${PUBLIC_HOST}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/planner?serverTimezone=UTC
+    password: ${DB_PASSWORD}
+#  rabbitmq:
+#    host: rabbitmq
+#    password: ${RMQ_PASSWORD}
+
+jwt:
+  token:
+    secret: ${JWT_SECRET}

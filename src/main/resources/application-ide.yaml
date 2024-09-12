@@ -1,0 +1,14 @@
+app:
+  public-host: http://localhost:8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/planner?serverTimezone=UTC
+    password: 8998
+#  rabbitmq:
+#    host: localhost
+#    password: password
+
+jwt:
+  token:
+    secret: 'P2a3KPYdZruEaxt9hpcf4HmwzwerfvatHcZSksnsakIUHvsFAsdVSS'
