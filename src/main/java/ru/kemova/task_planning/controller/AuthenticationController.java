@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kemova.task_planning.dto.AuthnResponseDto;
+import ru.kemova.task_planning.dto.AuthnTokenResponseDto;
 import ru.kemova.task_planning.dto.PersonRequestAuthnDto;
 import ru.kemova.task_planning.dto.PersonRequestDto;
 import ru.kemova.task_planning.service.AuthenticationService;
@@ -66,7 +66,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid PersonRequestDto personRequestDto) {
         log.info("Request for register user -> {}", personRequestDto.getEmail());
-        AuthnResponseDto registered = authenticationService.register(personRequestDto);
+        AuthnTokenResponseDto registered = authenticationService.register(personRequestDto);
         log.info("User successfully registered -> {}", personRequestDto.getEmail());
         return ResponseEntity.ok(registered);
     }

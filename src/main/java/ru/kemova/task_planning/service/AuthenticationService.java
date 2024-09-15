@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kemova.task_planning.config.security.PersonDetails;
-import ru.kemova.task_planning.dto.AuthnResponseDto;
+import ru.kemova.task_planning.dto.AuthnTokenResponseDto;
 import ru.kemova.task_planning.dto.PersonRequestAuthnDto;
 import ru.kemova.task_planning.dto.PersonRequestDto;
 import ru.kemova.task_planning.model.Person;
@@ -39,7 +39,7 @@ public class AuthenticationService {
     private final ProducerRabbitService producerRabbitService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public AuthnResponseDto authenticate(PersonRequestAuthnDto personRequestAuthnDto) {
+    public AuthnTokenResponseDto authenticate(PersonRequestAuthnDto personRequestAuthnDto) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(personRequestAuthnDto.getEmail(),
@@ -54,12 +54,12 @@ public class AuthenticationService {
                 .ofNullable(personRepository.findByEmail(personRequestAuthnDto.getEmail()))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found exception"));
 
-        return AuthnResponseDto.builder()
+        return AuthnTokenResponseDto.builder()
                 .token(jwtService.generateToken(new PersonDetails(person.get())))
                 .build();
     }
 
-    public AuthnResponseDto register(PersonRequestDto personRequestDto) {
+    public AuthnTokenResponseDto register(PersonRequestDto personRequestDto) {
 
         if (isPasswordsNotEqual(personRequestDto)) {
             throw new PasswordsNotSameException();
@@ -85,7 +85,7 @@ public class AuthenticationService {
             log.info("Token for user: {} - DOESN'T sent to rabbitMQ", personRequestDto.getEmail());
         }
 
-        return AuthnResponseDto.builder()
+        return AuthnTokenResponseDto.builder()
                 .token(jwtService.generateToken(new PersonDetails(person)))
                 .build();
     }

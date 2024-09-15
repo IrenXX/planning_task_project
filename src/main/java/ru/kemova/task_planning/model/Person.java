@@ -1,15 +1,13 @@
 package ru.kemova.task_planning.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -25,27 +23,25 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 30)
-    @NotEmpty(message = "Name should be null")
-    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @Column(name = "name", nullable = false)
+    @Schema(description = "Имя пользователя", example = "Jon")
+    @Size(min = 5, max = 50, message = "Имя пользователя должно содержать от 5 до 50 символов")
+    @NotBlank(message = "Имя пользователя не может быть пустыми")
     private String name;
 
     @Column(name = "email", nullable = false, unique = true)
-    @NotEmpty
-    @Email
+    @NotBlank(message = "Адрес электронной почты не может быть пустыми")
+    @Email(message = "Email адрес должен быть в формате user@example.com")
     private String email;
 
     @Column(name = "password", nullable = false)
-    @NotEmpty
+    @NotBlank(message = "Пароль не может быть пустыми")
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
 
-    @Column(name = "confirmed")
-    @Builder.Default
-    private boolean isConfirmed = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -55,8 +51,16 @@ public class Person {
     )
     private List<Role> roles;
 
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "role", nullable = false)
+//    private Roles role;
+
     @OneToMany(mappedBy = "person")
     private List<Task> tasks;
+
+    @Column(name = "confirmed")
+    @Builder.Default
+    private boolean isConfirmed = false;
 
     public Person(String name, String email, String password, boolean confirmed, List<Role> roles) {
         this.name = name;

@@ -1,6 +1,5 @@
 package ru.kemova.task_planning.service;
 
-
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -36,11 +35,12 @@ public class JwtService {
     public String generateToken(PersonDetails personDetails) {
         Map<String, Object> claims = new HashMap<>();
 
-        claims.put("email", personDetails.getUsername());
-        claims.put("name", personDetails.getPerson().getName());
-        claims.put("confirmed", personDetails.getPerson().isConfirmed());
-        claims.put("roles", getRolesName(personDetails));
-
+        if (personDetails instanceof UserDetails) {
+            claims.put("name", personDetails.getPerson().getName());
+            claims.put("email", personDetails.getUsername());
+            claims.put("confirmed", personDetails.getPerson().isConfirmed());
+            claims.put("roles", getRolesName(personDetails));
+        }
         Date issuedDate = new Date();
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime.toMillis());
 
@@ -54,6 +54,10 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * Получение ключа для подписи токена
+     * @return ключ
+     */
     private Key getSecretKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -81,27 +85,30 @@ public class JwtService {
         return claims;
     }
 
+    //извлечение имени из токена
     public String getUsername(String token) {
         return getAllClaimsFromToken(token).getSubject();
-    }
-
-    public List<String> getRoles(String token) {
-        @SuppressWarnings("unchecked")
-        List<String> roles = getAllClaimsFromToken(token).get("roles", List.class);
-        return roles;
     }
 
     public boolean isTokenValid(String token, PersonDetails personDetails) {
 
         try {
-            String username = getUsername(token);
-            if (username.equals(personDetails.getUsername())) {
+            final String username = getUsername(token);
+            if (username.equals(personDetails.getUsername()) && !isTokenExpired(token)) {
                 return true;
             }
         } catch (JwtException | IllegalArgumentException e) {
             log.info("Jwt not valid -> {}", e.getMessage());
         }
         return false;
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return getAllClaimsFromToken(token).getExpiration();
     }
 
     private List<String> getRolesName(UserDetails userDetails) {

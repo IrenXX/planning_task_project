@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kemova.task_planning.config.security.PersonDetails;
-import ru.kemova.task_planning.dto.AuthnResponseDto;
+import ru.kemova.task_planning.dto.AuthnTokenResponseDto;
 import ru.kemova.task_planning.model.Person;
 import ru.kemova.task_planning.model.ConfirmationToken;
 import ru.kemova.task_planning.exception.ConfirmationNotSuccessfullyException;
@@ -38,7 +38,7 @@ public class ConfirmationController {
         }
 
         Person person = personService.findByEmail(principal.getName());
-        AuthnResponseDto confirmed = AuthnResponseDto.builder()
+        AuthnTokenResponseDto confirmed = AuthnTokenResponseDto.builder()
                 .token(jwtService.generateToken(new PersonDetails(person)))
                 .build();
 

@@ -20,7 +20,7 @@ public class PersonDetailsService implements UserDetailsService {
     @Transactional
     public PersonDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Person person = personService.findByEmail(email);
-        log.info("User with email: {} - successfully loaded", email);
+        log.info("Person with email: {} - successfully loaded for Security", email);
         return new PersonDetails(person);
     }
 }
