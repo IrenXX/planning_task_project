@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ProjectError {
+
     private int status;
     private MessageError message;
 }

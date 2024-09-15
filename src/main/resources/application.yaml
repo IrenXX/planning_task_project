@@ -1,0 +1,32 @@
+app:
+  rabbit:
+    queue: EMAIL_SENDING_TASKS
+    exchange: email
+    routing_key: email
+  token-confirm:
+    lifetime: 24h
+
+server:
+  port: 8088
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/planner
+    username: postgres
+    password: 8998
+  jpa:
+    show-sql: true
+  hibernate:
+    ddl-auto: validate
+
+flyway:
+  enabled: true
+
+  rabbitmq:
+    username: admin
+
+
+jwt:
+  token:
+    lifetime: 24h
+    secret: 'P2a3KPYdZruEaxt9hpcf4HmwzwerfvatHcZSksnsakIUHvsFAsdVSS'

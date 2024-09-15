@@ -1,6 +1,7 @@
 package ru.kemova.task_planning.exception.error;
 
 public enum MessageError {
+
     USER_NOT_FOUND,
     USER_ALREADY_EXIST,
     PASSWORDS_ARE_NOT_EQUAL,
