@@ -42,18 +42,18 @@ public class Person {
     @Column(name = "status")
     private Status status;
 
+//
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "people_roles",
+//            joinColumns = {@JoinColumn(name = "person_id", referencedColumnName = "id")},
+//            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
+//    )
+//    private List<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "people_roles",
-            joinColumns = {@JoinColumn(name = "person_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
-    )
-    private List<Role> roles;
-
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "role", nullable = false)
-//    private Roles role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Roles role;
 
     @OneToMany(mappedBy = "person")
     private List<Task> tasks;
@@ -62,12 +62,12 @@ public class Person {
     @Builder.Default
     private boolean isConfirmed = false;
 
-    public Person(String name, String email, String password, boolean confirmed, List<Role> roles) {
+    public Person(String name, String email, String password, boolean confirmed, Roles role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.isConfirmed = confirmed;
-        this.roles = roles;
         this.status = Status.ACTIVE;
+        this.role = role;
     }
 }

@@ -9,6 +9,7 @@ import ru.kemova.task_planning.model.Person;
 import ru.kemova.task_planning.model.Status;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -18,9 +19,7 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return person.getRoles().stream()
-                .map(role ->
-                        new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority(person.getRole().name()));
     }
 
     @Override

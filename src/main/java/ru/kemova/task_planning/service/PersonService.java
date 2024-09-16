@@ -1,7 +1,6 @@
 package ru.kemova.task_planning.service;
 
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,11 +31,6 @@ public class PersonService {
         return person;
     }
 
-   // @Transactional
-    public Person save(Person person) {
-        return personRepository.save(person);
-    }
-
     //@Transactional
     public Person create(Person person) {
         log.info("Process for create person start");
@@ -48,6 +42,7 @@ public class PersonService {
             log.info("Person with email: {} - already exist", person.getEmail());
             throw new UserAlreadyExistException();
         }
-        return save(person);
+        log.info("Person to create");
+        return personRepository.save(person);
     }
 }

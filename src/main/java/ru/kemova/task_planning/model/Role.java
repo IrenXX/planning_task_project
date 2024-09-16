@@ -25,8 +25,8 @@ public class Role {
     @Column(name = "status")
     private Status status;
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<Person> people;
+//    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+//    private List<Person> people;
 
     public Role(String name) {
         this.name = name;

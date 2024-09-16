@@ -6,6 +6,19 @@ app:
   token-confirm:
     lifetime: 24h
 
+springdoc:
+  show-actuator: true
+  enable-native-support: true
+  swagger-ui:
+    tagsSorter: alpha
+    operations-sorter: alpha
+    doc-expansion: none
+    disable-swagger-default-url: true
+
+#logging:
+#  level:
+#    root: DEBUG
+
 server:
   port: 8088
 
@@ -13,7 +26,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/planner
     username: postgres
-    password: 8998
+    password: 9889
   jpa:
     show-sql: true
   hibernate:

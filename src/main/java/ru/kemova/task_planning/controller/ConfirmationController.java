@@ -48,11 +48,12 @@ public class ConfirmationController {
     @GetMapping("/send-again")
     public ResponseEntity<?> sendConfirm(Principal principal) {
         log.info("Try send confirm email one more time, for user -> {}", principal.getName());
-        ConfirmationToken confirmationToken = confirmationTokenService.findConfirmationTokenByPerson(personService.findByEmail(principal.getName()));
+        ConfirmationToken confirmationToken = confirmationTokenService
+                .findConfirmationTokenByPerson(personService.findByEmail(principal.getName()));
         if (confirmationToken == null) {
             throw new ConfirmationNotSuccessfullyException();
         }
-        producerRabbitService.send(converterDtoService.createConfirmMessageFromConfirmationToken(confirmationToken));
+        producerRabbitService.send(converterDtoService.createMessageDtoFromConfirmationToken(confirmationToken));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 }

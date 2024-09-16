@@ -32,7 +32,7 @@ public class TaskService {
         List<Task> tasks = taskRepository.findAllByPerson(person);
         List<TaskResponseDto> taskResponseDtoList = new ArrayList<>();
         if (tasks != null) {
-            taskResponseDtoList = tasks.stream().map(converterDtoService::doFromTaskToTaskDto)
+            taskResponseDtoList = tasks.stream().map(converterDtoService::getTaskDtoFromTask)
                     .collect(Collectors.toList());
         }
         return taskResponseDtoList;
@@ -47,7 +47,7 @@ public class TaskService {
         if (task == null) {
             return new TaskResponseDto();
         }
-        return converterDtoService.doFromTaskToTaskDto(task);
+        return converterDtoService.getTaskDtoFromTask(task);
     }
 
     public boolean save(String email, TaskRequestDto taskRequestDto) {

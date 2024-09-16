@@ -1,5 +1,6 @@
 package ru.kemova.task_planning.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,10 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-//    @Operation(
-//            summary = "Аутентификация пользователя",
-//            description = "Позволяет получить токен доступа отправив пользовательские данные"
-//    )
+    @Operation(
+            summary = "Аутентификация пользователя",
+            description = "Позволяет получить токен доступа отправив пользовательские данные"
+    )
 //    @ApiResponses(value = {
 //            @ApiResponse(responseCode = "200", description = "Успешная аутентификация",
 //                    content = @Content(mediaType = "application/json",
@@ -45,10 +46,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(personRequestAuthnDto));
     }
 
-//    @Operation(
-//            summary = "Регистрация пользователя",
-//            description = "Позволяет зарегистрировать пользователя"
-//    )
+    @Operation(
+            summary = "Регистрация пользователя",
+            description = "Позволяет зарегистрировать пользователя"
+    )
 //    @ApiResponses(value = {
 //            @ApiResponse(responseCode = "200", description = "Успешная регистрация",
 //                    content = @Content(mediaType = "application/json",

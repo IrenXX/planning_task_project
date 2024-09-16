@@ -1,12 +1,12 @@
 package ru.kemova.task_planning.service;
 
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kemova.task_planning.dto.MessageDto;
 import ru.kemova.task_planning.dto.PersonResponseDto;
@@ -24,17 +24,12 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ConverterDtoService {
 
     //@Value("${app.public-host}")
     private String publicHost;
-
-    @Autowired
     private final ModelMapper modelMapper;
-
-    public ConverterDtoService(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
 
     public PersonResponseDto getPersonFromDTO(Person person) {
         TypeMap<Person, PersonResponseDto> typeMap = modelMapper.typeMap(Person.class, PersonResponseDto.class);
@@ -51,7 +46,7 @@ public class ConverterDtoService {
         return modelMapper.map(person, PersonResponseDto.class);
     }
 
-    public TaskResponseDto doFromTaskToTaskDto(Task task) {
+    public TaskResponseDto getTaskDtoFromTask(Task task) {
 
         TypeMap<Task, TaskResponseDto> typeMap = modelMapper.typeMap(Task.class, TaskResponseDto.class);
 
@@ -69,15 +64,13 @@ public class ConverterDtoService {
                 return taskStatus == TaskStatus.DONE;
             }
         };
-
-
         typeMap.addMappings(mapping -> mapping.using(toLocalDate).map(Task::getCreateAt, TaskResponseDto::setCreated));
         typeMap.addMappings(mapping -> mapping.using(isDone).map(Task::getTaskStatus, TaskResponseDto::setDone));
 
         return modelMapper.map(task, TaskResponseDto.class);
     }
 
-    public MessageDto createConfirmMessageFromConfirmationToken(ConfirmationToken confirmationToken) {
+    public MessageDto createMessageDtoFromConfirmationToken(ConfirmationToken confirmationToken) {
         var title = String.format("Confirm registration on %s", publicHost);
         var body = String.format("To confirm the email, please follow the link from the email <a href=\"%s/?confirm-token=%s\">%s/?confirm-token=%s</a>",
                 publicHost, confirmationToken.getToken(), publicHost, confirmationToken.getToken());
