@@ -7,38 +7,38 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kemova.task_planning.dto.TaskRequestDto;
-import ru.kemova.task_planning.exception.UserNotAuthenticated;
-import ru.kemova.task_planning.exception.error.ProjectError;
+import ru.kemova.task_planning.dto.TaskResponseDto;
+import ru.kemova.task_planning.exception.UserNotAuthenticatedException;
 import ru.kemova.task_planning.exception.error.MessageError;
+import ru.kemova.task_planning.exception.error.ProjectError;
 import ru.kemova.task_planning.service.TaskService;
 
 import java.security.Principal;
+import java.util.List;
 
+@RestController
+@RequestMapping("/api/v1/tasks")
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/tasks")
-@RestController
 public class TaskController {
 
     private final TaskService taskService;
 
     @GetMapping
-    public ResponseEntity<?> getAll(Principal principal) {
-        String email = getEmailIfAutenticated(principal);
+    public ResponseEntity<List<TaskResponseDto>> getAll(Principal principal) {
+        String email = getEmailIfAuthenticated(principal);
 
         return ResponseEntity.ok(taskService.getTasksByEmail(email));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(Principal principal, @PathVariable long id) {
-        String email = getEmailIfAutenticated(principal);
-
-        return ResponseEntity.ok(taskService.getTaskByIdAndEmail(id, email));
+    public ResponseEntity<TaskResponseDto> getById(@PathVariable long id) {
+        return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
     @PostMapping
     public ResponseEntity<?> create(Principal principal, @RequestBody TaskRequestDto taskRequestDto) {
-        String email = getEmailIfAutenticated(principal);
+        String email = getEmailIfAuthenticated(principal);
 
         if (!taskService.save(email, taskRequestDto)) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ProjectError(HttpStatus.BAD_REQUEST.value(), MessageError.COULD_NOT_CREATE_ENTITY));
@@ -49,7 +49,7 @@ public class TaskController {
 
     @PutMapping
     public ResponseEntity<?> update(Principal principal, @RequestBody TaskRequestDto taskRequestDto) {
-        String email = getEmailIfAutenticated(principal);
+        String email = getEmailIfAuthenticated(principal);
 
         if (!taskService.save(email, taskRequestDto)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ProjectError(HttpStatus.BAD_REQUEST.value(), MessageError.COULD_NOT_UPDATE_ENTITY));
@@ -59,19 +59,14 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(Principal principal, @PathVariable long id) {
-        String email = getEmailIfAutenticated(principal);
-
-        if (!taskService.delete(email, id)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ProjectError(HttpStatus.BAD_REQUEST.value(), MessageError.COULD_NOT_DELETE_ENTITY));
-        }
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable long id) {
+        taskService.delete(id);
     }
 
-    private static String getEmailIfAutenticated(Principal principal) {
+    private static String getEmailIfAuthenticated(Principal principal) {
         if (principal == null) {
-            throw new UserNotAuthenticated();
+            throw new UserNotAuthenticatedException();
         }
         return principal.getName();
     }

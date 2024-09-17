@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findAllByPerson(Person person);
-    Optional<Task> findByPersonAndId(Person person, Long id);
+    Optional<Task> findById(Long id);
 }

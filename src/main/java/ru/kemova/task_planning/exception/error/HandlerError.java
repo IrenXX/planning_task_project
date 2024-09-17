@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import ru.kemova.task_planning.exception.ConfirmationNotSuccessfullyException;
 import ru.kemova.task_planning.exception.PasswordsNotSameException;
 import ru.kemova.task_planning.exception.UserAlreadyExistException;
-import ru.kemova.task_planning.exception.UserNotAuthenticated;
+import ru.kemova.task_planning.exception.UserNotAuthenticatedException;
 
 @RestControllerAdvice
 public class HandlerError extends ResponseEntityExceptionHandler {
@@ -36,7 +36,7 @@ public class HandlerError extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ProjectError(HttpStatus.UNAUTHORIZED.value(), MessageError.CREDENTIALS_IS_NOT_VALID), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(UserNotAuthenticated.class)
+    @ExceptionHandler(UserNotAuthenticatedException.class)
     public ResponseEntity<ProjectError> notAuthenticated() {
         return new ResponseEntity<>(new ProjectError(HttpStatus.UNAUTHORIZED.value(), MessageError.JWT_TOKEN_NOT_VALID), HttpStatus.UNAUTHORIZED);
     }

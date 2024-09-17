@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table(name = "confirm_tokens")
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Builder
 @AllArgsConstructor
 public class ConfirmationToken {
@@ -23,7 +23,7 @@ public class ConfirmationToken {
     private UUID token;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "person_id")
     private Person person;
 
     @Column(name = "expired")

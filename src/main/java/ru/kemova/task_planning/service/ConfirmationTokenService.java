@@ -5,8 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.kemova.task_planning.model.Person;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kemova.task_planning.model.ConfirmationToken;
+import ru.kemova.task_planning.model.Person;
 import ru.kemova.task_planning.repository.ConfirmationTokenRepository;
 
 import java.time.Duration;
@@ -20,9 +21,11 @@ public class ConfirmationTokenService {
 
     @Value("${app.token-confirm.lifetime}")
     private Duration tokenConfirmationLifeTime;
+
     private final ConfirmationTokenRepository repository;
     private final PersonService personService;
 
+    @Transactional
     public ConfirmationToken createToken(Person person) {
 
         Date issuedDate = new Date();
@@ -34,16 +37,16 @@ public class ConfirmationTokenService {
                 .expired(expiredDate)
                 .build();
 
-        repository.save(confirmationToken);
-
-        return confirmationToken;
+        return repository.save(confirmationToken);
     }
 
+    @Transactional(readOnly = true)
     public ConfirmationToken findToken(String token) {
         UUID uuid = UUID.fromString(token);
         return repository.findByToken(uuid).orElse(null);
     }
 
+    @Transactional
     public boolean confirm(String token) {
         UUID uuidToken;
         try {
@@ -56,17 +59,16 @@ public class ConfirmationTokenService {
         if (confirmationToken == null) {
             return false;
         }
-        ;
+
         Person person = personService.findByEmail(confirmationToken.getPerson().getEmail());
         person.setConfirmed(true);
         personService.create(person);
         repository.delete(confirmationToken);
-
         return true;
     }
 
+    @Transactional(readOnly = true)
     public ConfirmationToken findConfirmationTokenByPerson(Person person) {
         return repository.findByPerson(person).orElse(null);
     }
-
 }

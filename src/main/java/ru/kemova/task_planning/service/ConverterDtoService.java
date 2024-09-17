@@ -8,10 +8,8 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Service;
-import ru.kemova.task_planning.dto.MessageDto;
 import ru.kemova.task_planning.dto.PersonResponseDto;
 import ru.kemova.task_planning.dto.TaskResponseDto;
-import ru.kemova.task_planning.model.ConfirmationToken;
 import ru.kemova.task_planning.model.Person;
 import ru.kemova.task_planning.model.Task;
 import ru.kemova.task_planning.model.TaskStatus;
@@ -27,8 +25,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class ConverterDtoService {
 
-    //@Value("${app.public-host}")
-    private String publicHost;
+
     private final ModelMapper modelMapper;
 
     public PersonResponseDto getPersonFromDTO(Person person) {
@@ -68,16 +65,5 @@ public class ConverterDtoService {
         typeMap.addMappings(mapping -> mapping.using(isDone).map(Task::getTaskStatus, TaskResponseDto::setDone));
 
         return modelMapper.map(task, TaskResponseDto.class);
-    }
-
-    public MessageDto createMessageDtoFromConfirmationToken(ConfirmationToken confirmationToken) {
-        var title = String.format("Confirm registration on %s", publicHost);
-        var body = String.format("To confirm the email, please follow the link from the email <a href=\"%s/?confirm-token=%s\">%s/?confirm-token=%s</a>",
-                publicHost, confirmationToken.getToken(), publicHost, confirmationToken.getToken());
-        return MessageDto.builder()
-                .email(confirmationToken.getPerson().getEmail())
-                .title(title)
-                .body(body)
-                .build();
     }
 }

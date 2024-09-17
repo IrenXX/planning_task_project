@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kemova.task_planning.dto.PersonResponseDto;
-import ru.kemova.task_planning.exception.UserNotAuthenticated;
-import ru.kemova.task_planning.service.PersonService;
+import ru.kemova.task_planning.exception.UserNotAuthenticatedException;
+import ru.kemova.task_planning.model.Person;
 import ru.kemova.task_planning.service.ConverterDtoService;
+import ru.kemova.task_planning.service.PersonService;
 
 import java.security.Principal;
 
 @RestController
-@RequestMapping(value =  "/api/v1/user")
+@RequestMapping(value = "/api/v1/user")
 @Slf4j
 @RequiredArgsConstructor
 public class PersonController {
@@ -24,14 +25,9 @@ public class PersonController {
     private final ConverterDtoService converterDtoService;
 
     @GetMapping
-    public ResponseEntity<?> getPerson(Principal principal) {
-        PersonResponseDto personResponseDto = null;
-        if (principal != null) {
-            personResponseDto = converterDtoService.getPersonFromDTO(personService.findByEmail(principal.getName()));
-        } else {
-            throw new UserNotAuthenticated();
-        }
-
+    public ResponseEntity<PersonResponseDto> getPerson(Principal principal) {
+        Person person = personService.findByEmail(principal.getName());
+        PersonResponseDto personResponseDto = converterDtoService.getPersonFromDTO(person);
         return ResponseEntity.ok(personResponseDto);
     }
 }

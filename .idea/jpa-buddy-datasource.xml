@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JpbDataSourceConfig">
+    <data-sources>
+      <data-source id="fc59fa07-f3e5-4a98-a7b7-9282399f8ed9" name="planning_task_project" url="jdbc:postgresql://localhost:5432/planner" driverClass="org.postgresql.Driver" />
+    </data-sources>
     <data-source-infos>
       <data-source-info id="" persistence-unit-name="Default" />
     </data-source-infos>

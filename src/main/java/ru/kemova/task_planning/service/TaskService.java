@@ -3,9 +3,13 @@ package ru.kemova.task_planning.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.kemova.task_planning.dto.MessageDto;
 import ru.kemova.task_planning.dto.TaskRequestDto;
 import ru.kemova.task_planning.dto.TaskResponseDto;
+import ru.kemova.task_planning.model.ConfirmationToken;
 import ru.kemova.task_planning.model.Person;
 import ru.kemova.task_planning.model.Task;
 import ru.kemova.task_planning.model.TaskStatus;
@@ -22,13 +26,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TaskService {
 
+    //@Value("${app.public-host}")
+    private String publicHost;
+
     private final TaskRepository taskRepository;
-    private final PersonRepository personRepository;
+    private final PersonService personService;
     private final ConverterDtoService converterDtoService;
 
+    @Transactional(readOnly = true)
     public List<TaskResponseDto> getTasksByEmail(String email) {
-
-        Person person = personRepository.findByEmail(email).get();
+        Person person = personService.findByEmail(email);
         List<Task> tasks = taskRepository.findAllByPerson(person);
         List<TaskResponseDto> taskResponseDtoList = new ArrayList<>();
         if (tasks != null) {
@@ -38,21 +45,19 @@ public class TaskService {
         return taskResponseDtoList;
     }
 
-
-    public TaskResponseDto getTaskByIdAndEmail(long id, String email) {
-
-        Person person = personRepository.findByEmail(email).orElseThrow();
-
-        Task task = taskRepository.findByPersonAndId(person, id).orElse(null);
+    @Transactional(readOnly = true)
+    public TaskResponseDto getTaskById(long id) {
+        Task task = taskRepository.findById(id).orElse(null);
         if (task == null) {
             return new TaskResponseDto();
         }
         return converterDtoService.getTaskDtoFromTask(task);
     }
 
+    @Transactional
     public boolean save(String email, TaskRequestDto taskRequestDto) {
-        Person person = personRepository.findByEmail(email).orElse(null);
-        if (person == null || taskRequestDto.getTitle() == null) {
+        Person person = personService.findByEmail(email);
+        if (taskRequestDto.getTitle() == null) {
             return false;
         }
 
@@ -66,7 +71,7 @@ public class TaskService {
                     .build();
             log.info("created task -> {}", task.toString());
         } else {
-            task = taskRepository.findByPersonAndId(person, taskRequestDto.getId()).orElse(null);
+            task = taskRepository.findById(taskRequestDto.getId()).orElse(null);
             if (task == null) {
                 return false;
             }
@@ -86,19 +91,22 @@ public class TaskService {
         return true;
     }
 
-    public boolean delete(String email, long id) {
-        Person person = personRepository.findByEmail(email).orElse(null);
-        if (person == null) {
-            return false;
-        }
-
-        Task task = taskRepository.findByPersonAndId(person, id).orElse(null);
-        if (task == null) {
-            return false;
-        }
+    @Transactional
+    public void delete(long id) {
+        Task task = taskRepository.findById(id).orElseThrow(()->
+                new UsernameNotFoundException(String.format("Task not found with id %d",id)));
         taskRepository.delete(task);
+    }
 
-        return true;
+    public MessageDto createMessageDtoFromConfirmationToken(ConfirmationToken confirmationToken) {
+        var title = String.format("Confirm registration on %s", publicHost);
+        var body = String.format("To confirm the email, please follow the link from the email <a href=\"%s/?confirm-token=%s\">%s/?confirm-token=%s</a>",
+                publicHost, confirmationToken.getToken(), publicHost, confirmationToken.getToken());
+        return MessageDto.builder()
+                .email(confirmationToken.getPerson().getEmail())
+                .title(title)
+                .body(body)
+                .build();
     }
 }
 

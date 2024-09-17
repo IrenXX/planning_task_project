@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.kemova.task_planning.config.security.PersonDetails;
@@ -16,9 +15,7 @@ import java.security.Key;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,21 +29,19 @@ public class JwtService {
     @Value("${jwt.token.lifetime}")
     private Duration jwtLifetime;
 
-    public String generateToken(PersonDetails personDetails) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
 
-        if (personDetails instanceof UserDetails) {
-            claims.put("name", personDetails.getPerson().getName());
-            claims.put("email", personDetails.getUsername());
-            claims.put("confirmed", personDetails.getPerson().isConfirmed());
-            claims.put("roles", getRolesName(personDetails));
+        if (userDetails instanceof PersonDetails customPerson) {
+            claims.put("name", customPerson.getPerson().getName());
+            claims.put("roles", customPerson.getPerson().getRole());
         }
         Date issuedDate = new Date();
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime.toMillis());
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(personDetails.getUsername())
+                .setSubject(userDetails.getUsername())
                 .setIssuer("kemova")
                 .setIssuedAt(issuedDate)
                 .setExpiration(expiredDate)
@@ -90,11 +85,10 @@ public class JwtService {
         return getAllClaimsFromToken(token).getSubject();
     }
 
-    public boolean isTokenValid(String token, PersonDetails personDetails) {
-
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
             final String username = getUsername(token);
-            if (username.equals(personDetails.getUsername()) && !isTokenExpired(token)) {
+            if (username.equals(userDetails.getUsername()) && !isTokenExpired(token)) {
                 return true;
             }
         } catch (JwtException | IllegalArgumentException e) {
@@ -109,11 +103,5 @@ public class JwtService {
 
     private Date extractExpiration(String token) {
         return getAllClaimsFromToken(token).getExpiration();
-    }
-
-    private List<String> getRolesName(UserDetails userDetails) {
-        return userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
     }
 }
