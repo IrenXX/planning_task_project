@@ -27,10 +27,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    //private final DaoAuthenticationProvider daoAuthenticationProvider;
     private final JwtAuthFilter jwtAuthFilter;
     private final CustomAuthenticationEntryPoint entryPoint;
-    private final ApplicationConfig applicationConfig; //daoAuthenticationProvider
+    private final ApplicationConfig applicationConfig;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,6 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/auth/authenticate", "/api/v1/auth/register", "/swagger-ui.html").permitAll()
                         .requestMatchers("/**").authenticated()
+                        .requestMatchers("/api/v1/tasks/**").authenticated()
                         .requestMatchers("/secured").authenticated()
                         .requestMatchers("/info").authenticated()
                         .requestMatchers("/admin").hasRole("ADMIN")

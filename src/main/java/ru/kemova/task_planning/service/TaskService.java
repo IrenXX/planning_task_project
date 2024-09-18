@@ -6,14 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kemova.task_planning.dto.MessageDto;
+import ru.kemova.task_planning.dto.EmailMessageTask;
 import ru.kemova.task_planning.dto.TaskRequestDto;
 import ru.kemova.task_planning.dto.TaskResponseDto;
 import ru.kemova.task_planning.model.ConfirmationToken;
 import ru.kemova.task_planning.model.Person;
 import ru.kemova.task_planning.model.Task;
 import ru.kemova.task_planning.model.TaskStatus;
-import ru.kemova.task_planning.repository.PersonRepository;
 import ru.kemova.task_planning.repository.TaskRepository;
 
 import java.time.LocalDate;
@@ -98,11 +97,11 @@ public class TaskService {
         taskRepository.delete(task);
     }
 
-    public MessageDto createMessageDtoFromConfirmationToken(ConfirmationToken confirmationToken) {
+    public EmailMessageTask createMessageDtoFromConfirmationToken(ConfirmationToken confirmationToken) {
         var title = String.format("Confirm registration on %s", publicHost);
         var body = String.format("To confirm the email, please follow the link from the email <a href=\"%s/?confirm-token=%s\">%s/?confirm-token=%s</a>",
                 publicHost, confirmationToken.getToken(), publicHost, confirmationToken.getToken());
-        return MessageDto.builder()
+        return EmailMessageTask.builder()
                 .email(confirmationToken.getPerson().getEmail())
                 .title(title)
                 .body(body)

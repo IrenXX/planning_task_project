@@ -29,8 +29,6 @@ public class AuthenticationController {
     private final PersonService personService;
     private final ConfirmationTokenService confirmationTokenService;
     private final JwtService jwtService;
-    private final ProducerRabbitService producerRabbitService;
-    private final TaskService taskService;
 
     @Operation(
             summary = "Аутентификация пользователя",
@@ -104,7 +102,7 @@ public class AuthenticationController {
         if (confirmationToken == null) {
             throw new ConfirmationNotSuccessfullyException();
         }
-        producerRabbitService.send(taskService.createMessageDtoFromConfirmationToken(confirmationToken));
+       // emailTaskProducer.send(taskService.createMessageDtoFromConfirmationToken(confirmationToken));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 }

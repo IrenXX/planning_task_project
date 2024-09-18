@@ -3,15 +3,14 @@ ru/kemova/task_planning/controller/PersonController.class
 ru/kemova/task_planning/service/ConverterDtoService$3.class
 ru/kemova/task_planning/service/JwtService.class
 ru/kemova/task_planning/service/PersonService.class
-ru/kemova/task_planning/exception/UserNotAuthenticated.class
 ru/kemova/task_planning/model/ConfirmationToken.class
-ru/kemova/task_planning/controller/ConfirmationController.class
+ru/kemova/task_planning/kafka/EmailTaskProducer.class
 ru/kemova/task_planning/model/ConfirmationToken$ConfirmationTokenBuilder.class
-ru/kemova/task_planning/dto/MessageDto.class
 ru/kemova/task_planning/model/Task.class
 ru/kemova/task_planning/controller/TaskController.class
 ru/kemova/task_planning/service/ConverterDtoService$2.class
 ru/kemova/task_planning/exception/error/MessageError.class
+ru/kemova/task_planning/config/KafkaProducerConfig.class
 ru/kemova/task_planning/repository/ConfirmationTokenRepository.class
 ru/kemova/task_planning/config/JwtAuthFilter.class
 ru/kemova/task_planning/service/ProducerRabbitService.class
@@ -19,7 +18,6 @@ ru/kemova/task_planning/service/TaskService.class
 ru/kemova/task_planning/dto/TokenResponseDto.class
 ru/kemova/task_planning/config/RabbitConfig.class
 ru/kemova/task_planning/model/Person.class
-ru/kemova/task_planning/dto/MessageDto$MessageDtoBuilder.class
 ru/kemova/task_planning/config/security/CustomAuthenticationEntryPoint.class
 ru/kemova/task_planning/model/Status.class
 ru/kemova/task_planning/exception/ConfirmationNotSuccessfullyException.class
@@ -34,12 +32,14 @@ ru/kemova/task_planning/dto/PersonRequestAuthnDto.class
 ru/kemova/task_planning/model/Task$TaskBuilder.class
 ru/kemova/task_planning/config/security/PersonDetails.class
 ru/kemova/task_planning/config/security/SecurityConfig.class
+ru/kemova/task_planning/exception/UserNotAuthenticatedException.class
 ru/kemova/task_planning/config/ApplicationConfig.class
 ru/kemova/task_planning/exception/error/HandlerError.class
 ru/kemova/task_planning/model/Roles.class
 ru/kemova/task_planning/model/TaskStatus.class
 ru/kemova/task_planning/exception/error/ProjectError.class
 ru/kemova/task_planning/exception/PasswordsNotSameException.class
+ru/kemova/task_planning/dto/EmailMessageTask.class
 ru/kemova/task_planning/model/Person$PersonBuilder.class
 ru/kemova/task_planning/dto/TaskResponseDto.class
 ru/kemova/task_planning/dto/PersonRequestRegDto.class
@@ -48,3 +48,4 @@ ru/kemova/task_planning/TaskPlanningApplication.class
 ru/kemova/task_planning/service/ConverterDtoService$1.class
 ru/kemova/task_planning/service/PersonDetailsService.class
 ru/kemova/task_planning/controller/AuthenticationController.class
+ru/kemova/task_planning/dto/EmailMessageTask$EmailMessageTaskBuilder.class

@@ -27,7 +27,6 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<List<TaskResponseDto>> getAll(Principal principal) {
         String email = getEmailIfAuthenticated(principal);
-
         return ResponseEntity.ok(taskService.getTasksByEmail(email));
     }
 
@@ -41,7 +40,8 @@ public class TaskController {
         String email = getEmailIfAuthenticated(principal);
 
         if (!taskService.save(email, taskRequestDto)) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ProjectError(HttpStatus.BAD_REQUEST.value(), MessageError.COULD_NOT_CREATE_ENTITY));
+            ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ProjectError(HttpStatus.BAD_REQUEST.value(), MessageError.COULD_NOT_CREATE_ENTITY));
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body("");
@@ -50,9 +50,9 @@ public class TaskController {
     @PutMapping
     public ResponseEntity<?> update(Principal principal, @RequestBody TaskRequestDto taskRequestDto) {
         String email = getEmailIfAuthenticated(principal);
-
         if (!taskService.save(email, taskRequestDto)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ProjectError(HttpStatus.BAD_REQUEST.value(), MessageError.COULD_NOT_UPDATE_ENTITY));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ProjectError(HttpStatus.BAD_REQUEST.value(), MessageError.COULD_NOT_UPDATE_ENTITY));
         }
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
