@@ -97,7 +97,7 @@ public class TaskService {
         taskRepository.delete(task);
     }
 
-    public EmailMessageTask createMessageDtoFromConfirmationToken(ConfirmationToken confirmationToken) {
+    public EmailMessageTask createEmailTaskFromConfirmationToken(ConfirmationToken confirmationToken) {
         var title = String.format("Confirm registration on %s", publicHost);
         var body = String.format("To confirm the email, please follow the link from the email <a href=\"%s/?confirm-token=%s\">%s/?confirm-token=%s</a>",
                 publicHost, confirmationToken.getToken(), publicHost, confirmationToken.getToken());
