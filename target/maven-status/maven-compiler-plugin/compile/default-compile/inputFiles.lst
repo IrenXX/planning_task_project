@@ -2,7 +2,6 @@
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/config/ApplicationConfig.java
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/config/JwtAuthFilter.java
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/config/KafkaProducerConfig.java
-/Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/config/RabbitConfig.java
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/config/security/CustomAuthenticationEntryPoint.java
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/config/security/PersonDetails.java
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/config/security/SecurityConfig.java
@@ -39,5 +38,4 @@
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/service/JwtService.java
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/service/PersonDetailsService.java
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/service/PersonService.java
-/Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/service/ProducerRabbitService.java
 /Users/hator/IdeaProjects/planning_task_project/src/main/java/ru/kemova/task_planning/service/TaskService.java

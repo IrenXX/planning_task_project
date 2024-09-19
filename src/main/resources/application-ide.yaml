@@ -1,13 +1,13 @@
 app:
-  public-host: http://localhost:8080
+  public-host: ${PUBLIC_HOST}
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:postgresql://localhost:15432/planner?serverTimezone=UTC
-    password: 8998
-#  rabbitmq:
-#    host: localhost
-#    password: password
+    url: jdbc:postgresql://localhost:29092/planner?serverTimezone=UTC
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
 jwt:
   token:

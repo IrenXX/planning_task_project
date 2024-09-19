@@ -13,10 +13,8 @@ ru/kemova/task_planning/exception/error/MessageError.class
 ru/kemova/task_planning/config/KafkaProducerConfig.class
 ru/kemova/task_planning/repository/ConfirmationTokenRepository.class
 ru/kemova/task_planning/config/JwtAuthFilter.class
-ru/kemova/task_planning/service/ProducerRabbitService.class
 ru/kemova/task_planning/service/TaskService.class
 ru/kemova/task_planning/dto/TokenResponseDto.class
-ru/kemova/task_planning/config/RabbitConfig.class
 ru/kemova/task_planning/model/Person.class
 ru/kemova/task_planning/config/security/CustomAuthenticationEntryPoint.class
 ru/kemova/task_planning/model/Status.class

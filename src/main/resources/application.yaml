@@ -2,25 +2,21 @@ server:
   port: 8080
 
 app:
-#  rabbit:
-#    queue: EMAIL_SENDING_TASKS
-#    exchange: email
-#    routing_key: email
   token-confirm:
-    lifetime: 24h
+    lifetime: ${EXPIRATION}
 
 jwt:
   token:
-    lifetime: 24h
-    secret: 'P2a3KPYdZruEaxt9hpcf4HmwzwerfvatHcZSksnsakIUHvsFAsdVSS'
+    lifetime: ${EXPIRATION}
+    secret: ${JWT_SECRET_KEY}
 
 spring:
-#  config:
-#    import: optional:file:.env[.properties]
+  config:
+    import: classpath:additional-application.properties
   datasource:
     url: jdbc:postgresql://localhost:5432/planner
-    username: postgres
-    password: 8998
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     show-sql: true
   hibernate:
@@ -30,6 +26,3 @@ spring:
 
 flyway:
   enabled: true
-
-#  rabbitmq:
-#    username: admin

@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,9 @@ import ru.kemova.task_planning.service.PersonDetailsService;
 
 import java.io.IOException;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
+@AllArgsConstructor
+@Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     public static final String BEARER_PREFIX = "Bearer ";
