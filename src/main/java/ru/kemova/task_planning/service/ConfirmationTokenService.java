@@ -61,7 +61,7 @@ public class ConfirmationTokenService {
         }
 
         Person person = personService.findByEmail(confirmationToken.getPerson().getEmail());
-        person.setConfirmed(true);
+        //person.setConfirmed(true);
         personService.create(person);
         repository.delete(confirmationToken);
         return true;

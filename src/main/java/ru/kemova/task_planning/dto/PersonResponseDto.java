@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 public class PersonResponseDto {
-    private String name;
+    private String username;
     private String email;
     private LocalDate registrationDate;
 }

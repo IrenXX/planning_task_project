@@ -15,6 +15,7 @@ import ru.kemova.task_planning.model.Person;
 @Slf4j
 @RequiredArgsConstructor
 public class PersonDetailsService implements UserDetailsService {
+
     private final PersonService personService;
 
     @Override

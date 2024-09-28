@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class TaskResponseDto {
 
-    private long id;
+    private int id;
     private String created;
     private String title;
     private String description;

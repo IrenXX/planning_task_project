@@ -3,7 +3,7 @@ app:
 
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import: classpath:additional-application.properties
   datasource:
     url: jdbc:postgresql://localhost:29092/planner?serverTimezone=UTC
     username: ${DB_USERNAME}
@@ -11,4 +11,4 @@ spring:
 
 jwt:
   token:
-    secret: 'P2a3KPYdZruEaxt9hpcf4HmwzwerfvatHcZSksnsakIUHvsFAsdVSS'
+    secret: ${JWT_SECRET}

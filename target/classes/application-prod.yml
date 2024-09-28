@@ -3,7 +3,7 @@ app:
 
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import: classpath:additional-application.properties
   datasource:
     url: jdbc:postgresql://postgres:5432/planner?serverTimezone=UTC
     username: ${DB_USERNAME}

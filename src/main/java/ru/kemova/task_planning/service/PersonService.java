@@ -36,8 +36,8 @@ public class PersonService {
     @Transactional
     public Person create(Person person) {
         log.info("Process for create person start");
-        if (personRepository.existsByName(person.getName())) {
-            log.info("Person with name: {} - already exist", person.getName());
+        if (personRepository.existsByUsername(person.getUsername())) {
+            log.info("Person with name: {} - already exist", person.getUsername());
             throw new UserAlreadyExistException();
         }
         if (personRepository.existsByEmail(person.getEmail())) {

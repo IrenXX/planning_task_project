@@ -1,5 +1,0 @@
---INSERT INTO person (name, email, password)
--- VALUES ('admin', 'admin@admin.ru', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', true, 'ACTIVE', 'ROLE_ADMIN');
---
---INSERT INTO person (name, email, password)
--- VALUES ('user', 'user@user.ru', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', true, 'ACTIVE', 'ROLE_USER');

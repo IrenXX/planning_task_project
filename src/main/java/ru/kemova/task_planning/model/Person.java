@@ -19,12 +19,12 @@ public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "username", nullable = false)
     @Schema(description = "Имя пользователя", example = "Jon")
     @NotBlank(message = "Имя пользователя не может быть пустыми")
-    private String name;
+    private String username;
 
     @Column(name = "email", nullable = false, unique = true)
     @NotBlank(message = "Адрес электронной почты не может быть пустыми")
@@ -45,10 +45,6 @@ public class Person {
 
     @OneToMany(mappedBy = "person")
     private List<Task> tasks;
-
-    @Column(name = "confirmed")
-    @Builder.Default
-    private boolean isConfirmed = false;
 
 //    public Person(String name, String email, String password, boolean confirmed, Roles role) {
 //        this.name = name;

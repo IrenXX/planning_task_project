@@ -33,7 +33,7 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
 
         if (userDetails instanceof PersonDetails customPerson) {
-            claims.put("name", customPerson.getPerson().getName());
+            claims.put("name", customPerson.getPerson().getUsername());
             claims.put("roles", customPerson.getPerson().getRole());
         }
         Date issuedDate = new Date();

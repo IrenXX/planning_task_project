@@ -2,6 +2,7 @@ server:
   port: 8080
 
 app:
+  public-host: ${PUBLIC_HOST}
   token-confirm:
     lifetime: ${EXPIRATION}
 

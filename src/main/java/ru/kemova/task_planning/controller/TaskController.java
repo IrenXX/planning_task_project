@@ -31,7 +31,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDto> getById(@PathVariable long id) {
+    public ResponseEntity<TaskResponseDto> getById(@PathVariable int id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
@@ -60,7 +60,7 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable int id) {
         taskService.delete(id);
     }
 

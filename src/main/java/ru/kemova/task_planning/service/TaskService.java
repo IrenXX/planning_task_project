@@ -1,8 +1,11 @@
 package ru.kemova.task_planning.service;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +25,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Getter
 @Slf4j
 public class TaskService {
 
-    //@Value("${app.public-host}")
+    @Value("${app.public-host}")
     private String publicHost;
 
     private final TaskRepository taskRepository;
@@ -45,7 +49,7 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public TaskResponseDto getTaskById(long id) {
+    public TaskResponseDto getTaskById(int id) {
         Task task = taskRepository.findById(id).orElse(null);
         if (task == null) {
             return new TaskResponseDto();
@@ -61,7 +65,7 @@ public class TaskService {
         }
 
         Task task;
-        if (taskRequestDto.getId() == null) {
+        if (taskRequestDto.getId() == 0) {
             task = Task.builder()
                     .person(person)
                     .title(taskRequestDto.getTitle())
@@ -91,7 +95,7 @@ public class TaskService {
     }
 
     @Transactional
-    public void delete(long id) {
+    public void delete(int id) {
         Task task = taskRepository.findById(id).orElseThrow(()->
                 new UsernameNotFoundException(String.format("Task not found with id %d",id)));
         taskRepository.delete(task);

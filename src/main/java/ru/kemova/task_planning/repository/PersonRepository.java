@@ -7,9 +7,9 @@ import ru.kemova.task_planning.model.Person;
 import java.util.Optional;
 
 @Repository
-public interface PersonRepository extends JpaRepository<Person, Long> {
+public interface PersonRepository extends JpaRepository<Person, Integer> {
 
     Optional<Person> findByEmail(String email);
-    boolean existsByName(String username);
+    boolean existsByUsername(String username);
     boolean existsByEmail(String email);
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class TaskRequestDto {
-    private Long id;
+    private int id;
     private String title;
     private String description;
     private String status;

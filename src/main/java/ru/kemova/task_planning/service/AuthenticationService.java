@@ -62,7 +62,7 @@ public class AuthenticationService {
         Person person = createPerson(personRequestRegDto);
         try {
             personService.create(person);
-            log.info("User successfully saved in database -> {}, {}", personRequestRegDto.getName(),
+            log.info("User successfully saved in database -> {}, {}", personRequestRegDto.getUsername(),
                     personRequestRegDto.getEmail());
         } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyExistException();
@@ -84,7 +84,7 @@ public class AuthenticationService {
 
     private Person createPerson(PersonRequestRegDto personRequestRegDto) {
         return Person.builder()
-                .name(personRequestRegDto.getName())
+                .username(personRequestRegDto.getUsername())
                 .email(personRequestRegDto.getEmail())
                 .password(passwordEncoder.encode(personRequestRegDto.getPassword()))
                 .status(Status.ACTIVE)
