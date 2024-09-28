@@ -11,4 +11,4 @@ spring:
 
 jwt:
   token:
-    secret: 'P2a3KPYdZruEaxt9hpcf4HmwzwerfvatHcZSksnsakIUHvsFAsdVSS'
+    secret: ${JWT_SECRET}
